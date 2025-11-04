@@ -1,0 +1,333 @@
+// ...existing code...
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Iniciar Sesión</title>
+    <style>
+        :root{
+            --bg-1: #0f172a;
+            --bg-2: #071033;
+            --card: rgba(255,255,255,0.95);
+            --glass: rgba(255,255,255,0.06);
+            --accent-1: #2e60cd;
+            --accent-2: #7c3aed;
+            --muted: #6b7280;
+            --danger:#ef4444;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(2,6,23,0.6);
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: radial-gradient(800px circle at 10% 10%, rgba(124,58,237,0.12), transparent 12%),
+                        radial-gradient(600px circle at 90% 85%, rgba(37,99,235,0.08), transparent 8%),
+                        linear-gradient(180deg,var(--bg-1),var(--bg-2));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:28px;
+            color:#0f172a;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+
+        /* Card */
+        .card{
+            width:100%;
+            max-width:980px;
+            border-radius:calc(var(--radius));
+            background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+            box-shadow: var(--shadow);
+            overflow:hidden;
+            display:grid;
+            grid-template-columns: 1fr 420px;
+            gap:0;
+            align-items:stretch;
+        }
+
+        /* Left panel (decorative) */
+        .brand{
+            padding:36px;
+            background: linear-gradient(180deg, rgba(124,58,237,0.06), rgba(37,99,235,0.04));
+            display:flex;
+            flex-direction:column;
+            gap:18px;
+            align-items:flex-start;
+            justify-content:center;
+            min-height:320px;
+        }
+        .logo{
+            display:inline-flex;
+            align-items:center;
+            gap:12px;
+        }
+        .logo .mark{
+            width:56px;
+            height:56px;
+            border-radius:12px;
+            background: linear-gradient(135deg,var(--accent-1),var(--accent-2));
+            box-shadow: 0 6px 18px rgba(124,58,237,0.24);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-weight:700;
+            font-size:18px;
+        }
+        .brand h2{
+            margin:0;
+            font-size:20px;
+            color: #071033;
+        }
+        .brand p{
+            margin:0;
+            color:var(--muted);
+            font-size:14px;
+            max-width:320px;
+            line-height:1.5;
+        }
+
+        /* Form column */
+        .formcol{
+            padding:28px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+        }
+        h1{
+            margin:0 0 6px;
+            font-size:20px;
+            color:#0b1220;
+            letter-spacing:-0.2px;
+        }
+        p.lead{ margin:0 0 18px; color:var(--muted); font-size:14px; }
+
+        form{ display:grid; gap:14px; }
+
+        label{ font-size:13px; color:var(--muted); display:block; margin-bottom:8px; }
+
+        .field{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            background: rgba(15,23,42,0.03);
+            border:1px solid rgba(11,22,40,0.05);
+            padding:12px;
+            border-radius:10px;
+            transition: box-shadow .18s ease, transform .12s ease;
+        }
+        .field:focus-within{
+            box-shadow: 0 6px 22px rgba(37,99,235,0.08);
+            transform: translateY(-2px);
+        }
+
+        .field svg{ flex:0 0 18px; opacity:0.7; }
+        .field input{
+            border:0;
+            outline:0;
+            background:transparent;
+            width:100%;
+            font-size:15px;
+            color:inherit;
+        }
+        .row{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+        }
+        .checkbox{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+        .muted{ font-size:13px; color:var(--muted); text-decoration:none; }
+        .muted:hover{ text-decoration:underline; }
+
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
+            color:#fff;
+            border:0;
+            padding:12px 16px;
+            border-radius:10px;
+            font-weight:700;
+            cursor:pointer;
+            font-size:15px;
+            box-shadow: 0 8px 20px rgba(37,99,235,0.18);
+            transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+        }
+        .btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 30px rgba(37,99,235,0.22); }
+        .btn:disabled{ opacity:0.6; cursor:default; transform:none; box-shadow:none; }
+
+        .secondary{
+            background: transparent;
+            border:1px solid rgba(11,22,40,0.06);
+            color:#071033;
+            font-weight:600;
+        }
+
+        .error{ color:var(--danger); font-size:13px; margin-top:6px; }
+        .footer{ margin-top:18px; display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); }
+
+        /* small toggle link */
+        #togglePass{
+            background:none;border:0;padding:6px 8px;border-radius:8px;color:var(--muted);
+            cursor:pointer;font-size:13px;
+        }
+        #togglePass:hover{ background:rgba(2,6,23,0.03); color:#071033; }
+
+        /* responsive */
+        @media (max-width:860px){
+            .card{ grid-template-columns: 1fr; max-width:420px; }
+            .brand{ display:flex; align-items:center; justify-content:center; text-align:center; padding:22px; }
+            .brand p{ display:none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="card" role="main" aria-labelledby="loginTitle">
+        <section class="brand" aria-hidden="false">
+            <div class="logo">
+                <div class="mark">H</div>
+                <div>
+                    <strong>HotelPanel</strong><br />
+                    <small style="color:var(--muted);font-size:13px;">Gestión de reservas y clientes</small>
+                </div>
+            </div>
+            <h2>Bienvenido de vuelta</h2>
+            <p>Accede de forma segura para administrar reservas, ver disponibilidad y atender a tus huéspedes desde un solo lugar.</p>
+        </section>
+
+        <section class="formcol" aria-labelledby="loginTitle">
+            <h1 id="loginTitle">Inicia sesión en tu cuenta</h1>
+            <p class="lead">Usa tus credenciales para acceder al panel.</p>
+
+            <form id="loginForm" novalidate>
+                <div>
+                    <label for="email">Correo electrónico</label>
+                    <div class="field" aria-hidden="false">
+                        <!-- icono email -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.5v7A2.5 2.5 0 005.5 18h13A2.5 2.5 0 0021 15.5v-7M3 8.5l8.01 5.34a2 2 0 002 0L21 8.5" /></svg>
+                        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="tu@ejemplo.com" />
+                    </div>
+                    <div id="emailError" class="error" hidden></div>
+                </div>
+
+                <div>
+                    <label for="password">Contraseña</label>
+                    <div class="field">
+                        <!-- icono lock -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 0a2 2 0 002 2h8a2 2 0 002-2v-6a4 4 0 10-8 0v2" /></svg>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+                        <button type="button" id="togglePass" aria-label="Mostrar contraseña" title="Mostrar contraseña">Mostrar</button>
+                    </div>
+                    <div id="passError" class="error" hidden></div>
+                </div>
+
+                <div class="row">
+                    <label class="checkbox"><input id="remember" type="checkbox" /> Recuérdame</label>
+                    <a href="#" class="muted" id="forgot">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="btn" id="submitBtn" type="submit">Iniciar sesión</button>
+                    <button type="button" class="btn secondary" onclick="document.querySelector('#email').value='user@example.com';document.querySelector('#password').value='password123'">Demo</button>
+                </div>
+
+                <div id="formMessage" class="error" hidden role="status"></div>
+            </form>
+
+            <div class="footer">
+                <span class="muted">¿No tienes una cuenta?</span>
+                <a href="#" class="muted">Crear cuenta</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ...existing code...
+        (function(){
+            const form = document.getElementById('loginForm');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const toggle = document.getElementById('togglePass');
+            const submitBtn = document.getElementById('submitBtn');
+            const emailError = document.getElementById('emailError');
+            const passError = document.getElementById('passError');
+            const formMessage = document.getElementById('formMessage');
+
+            toggle.addEventListener('click', () => {
+                const isPwd = password.type === 'password';
+                password.type = isPwd ? 'text' : 'password';
+                toggle.textContent = isPwd ? 'Ocultar' : 'Mostrar';
+                toggle.setAttribute('aria-label', isPwd ? 'Ocultar contraseña' : 'Mostrar contraseña');
+            });
+
+            function showError(el, msg){
+                el.textContent = msg;
+                el.hidden = false;
+            }
+            function clearError(el){
+                el.textContent = '';
+                el.hidden = true;
+            }
+
+            form.addEventListener('submit', (ev) => {
+                ev.preventDefault();
+                clearError(emailError);
+                clearError(passError);
+                formMessage.hidden = true;
+
+                let valid = true;
+                const mailVal = email.value.trim();
+                const passVal = password.value;
+
+                if(!mailVal){
+                    showError(emailError, 'El correo es obligatorio.');
+                    valid = false;
+                } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailVal)){
+                    showError(emailError, 'Ingresa una dirección de correo válida.');
+                    valid = false;
+                }
+
+                if(!passVal){
+                    showError(passError, 'La contraseña es obligatoria.');
+                    valid = false;
+                } else if(passVal.length < 6){
+                    showError(passError, 'La contraseña debe tener al menos 6 caracteres.');
+                    valid = false;
+                }
+
+                if(!valid) return;
+
+                submitBtn.disabled = true;
+                const prevText = submitBtn.textContent;
+                submitBtn.textContent = 'Iniciando sesión...';
+
+                setTimeout(() => {
+                    if(mailVal.toLowerCase() === 'user@example.com' && passVal === 'password123'){
+                        alert('Inicio de sesión exitoso (demo).');
+                        form.reset();
+                    } else {
+                        formMessage.textContent = 'Credenciales inválidas. Usa user@example.com / password123 para la demo.';
+                        formMessage.hidden = false;
+                    }
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = prevText;
+                }, 900);
+            });
+
+            [email, password].forEach(input => {
+                input.addEventListener('input', () => {
+                    if(input === email) clearError(emailError);
+                    if(input === password) clearError(passError);
+                    formMessage.hidden = true;
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+// ...existing code...
